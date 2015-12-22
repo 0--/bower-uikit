@@ -1,4 +1,5 @@
 /*! UIkit 2.24.3 | http://www.getuikit.com | (c) 2014 YOOtheme | MIT License */
+/*! UIkit 2.24.3 | http://www.getuikit.com | (c) 2014 YOOtheme | MIT License */
 (function(addon) {
 
     var component;
@@ -103,7 +104,7 @@
                     switch(media[0].nodeName) {
                         case 'IMG':
 
-                            var src = media.attr('currentSrc') || media.attr('src'),
+                            var src = media.prop('currentSrc') || media.attr('src'),
                                 cover = UI.$('<div class="uk-cover-background uk-position-cover"></div>').css({'background-image':'url('+ src + ')'});
 
                             if (media.attr('width') && media.attr('height')) {
@@ -274,19 +275,16 @@
                 this.slides.css('height', '').each(function() {
                     var slide = $(this),
                         cover = slide.data('cover'),
-                        src = cover && slide.attr('currentSrc') || slide.attr('src'),
-                        currentSrc = cover && slide.data('src');
+                        src = slide.data('source'),
+                        media = src && slide.data('media'),
+                        currentSrc = media && media.prop('currentSrc') || media.attr('src');
 
                     height = Math.max(height, slide.height());
 
-                    if(currentSrc !== src){
-                        console.info('updating source:', src, currentSrc);
-                        slide.data('src', src).data('cover').css({
+                    if(currentSrc && currentSrc !== src){
+                        slide.data('source', currentSrc).data('cover').css({
                             backgroundImage: currentSrc
                         })
-                    }
-                    else {
-                        console.info('src has not changed:', src, currentSrc);
                     }
                 });
             }
