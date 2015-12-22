@@ -103,7 +103,8 @@
                     switch(media[0].nodeName) {
                         case 'IMG':
 
-                            var cover = UI.$('<div class="uk-cover-background uk-position-cover"></div>').css({'background-image':'url('+ media.attr('src') + ')'});
+                            var src = media.attr('currentSrc') || media.attr('src'),
+                                cover = UI.$('<div class="uk-cover-background uk-position-cover"></div>').css({'background-image':'url('+ src + ')'});
 
                             if (media.attr('width') && media.attr('height')) {
                                 placeholder = UI.$('<canvas></canvas>').attr({width:media.attr('width'), height:media.attr('height')});
@@ -113,7 +114,7 @@
                             }
 
                             media.css({width: '100%',height: 'auto', opacity:0});
-                            slide.prepend(cover).data('cover', cover);
+                            slide.prepend(cover).data('cover', cover).data('source', src);
                             break;
 
                         case 'IFRAME':
@@ -271,7 +272,18 @@
                 height = 0;
 
                 this.slides.css('height', '').each(function() {
-                    height = Math.max(height, UI.$(this).height());
+                    var slide = $(this),
+                        cover = slide.data('cover'),
+                        src = cover && slide.attr('currentSrc') || slide.attr('src'),
+                        currentSrc = cover && slide.data('src');
+
+                    height = Math.max(height, slide.height());
+
+                    if(currentSrc !== src){
+                        slide.data('src', src).data('cover').css({
+                            backgroundImage: currentSrc
+                        })
+                    }
                 });
             }
 
