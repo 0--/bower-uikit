@@ -280,7 +280,7 @@
                     height = Math.max(height, slide.height());
 
                     if(currentSrc !== src){
-                        console.info('updating source')
+                        console.info('updating source:', src, currentSrc);
                         slide.data('src', src).data('cover').css({
                             backgroundImage: currentSrc
                         })
