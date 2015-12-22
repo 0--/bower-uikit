@@ -286,7 +286,7 @@
                         })
                     }
                     else {
-                        console.info('src has not changed');
+                        console.info('src has not changed:', src, currentSrc);
                     }
                 });
             }
